@@ -1,77 +1,43 @@
 # Reproducible Research: Peer Assessment 1
 
 
-```r
-library(datasets)
-data(airquality)
-summary(airquality)
-```
-
-```
-##      Ozone          Solar.R         Wind            Temp     
-##  Min.   :  1.0   Min.   :  7   Min.   : 1.70   Min.   :56.0  
-##  1st Qu.: 18.0   1st Qu.:116   1st Qu.: 7.40   1st Qu.:72.0  
-##  Median : 31.5   Median :205   Median : 9.70   Median :79.0  
-##  Mean   : 42.1   Mean   :186   Mean   : 9.96   Mean   :77.9  
-##  3rd Qu.: 63.2   3rd Qu.:259   3rd Qu.:11.50   3rd Qu.:85.0  
-##  Max.   :168.0   Max.   :334   Max.   :20.70   Max.   :97.0  
-##  NA's   :37      NA's   :7                                   
-##      Month           Day      
-##  Min.   :5.00   Min.   : 1.0  
-##  1st Qu.:6.00   1st Qu.: 8.0  
-##  Median :7.00   Median :16.0  
-##  Mean   :6.99   Mean   :15.8  
-##  3rd Qu.:8.00   3rd Qu.:23.0  
-##  Max.   :9.00   Max.   :31.0  
-## 
-```
-
-
-```r
-pairs(airquality)
-```
-
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
-
-
-```r
-library(stats)
-fit<- lm(Ozone ~ Wind + Solar.R + Temp, data= airquality)
-summary(fit)
-```
-
-```
-## 
-## Call:
-## lm(formula = Ozone ~ Wind + Solar.R + Temp, data = airquality)
-## 
-## Residuals:
-##    Min     1Q Median     3Q    Max 
-## -40.48 -14.22  -3.55  10.10  95.62 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) -64.3421    23.0547   -2.79   0.0062 ** 
-## Wind         -3.3336     0.6544   -5.09  1.5e-06 ***
-## Solar.R       0.0598     0.0232    2.58   0.0112 *  
-## Temp          1.6521     0.2535    6.52  2.4e-09 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 21.2 on 107 degrees of freedom
-##   (42 observations deleted due to missingness)
-## Multiple R-squared:  0.606,	Adjusted R-squared:  0.595 
-## F-statistic: 54.8 on 3 and 107 DF,  p-value: <2e-16
-```
-
-
 ## Loading and preprocessing the data
 
+
+```r
+data =  read.csv("activity.csv", stringsAsFactors=FALSE)
+data$date= as.Date(data$date, format="%Y-%m-%d")
+```
 
 
 ## What is mean total number of steps taken per day?
 
+The histogram of the total number of steps taken each day
 
+```r
+data2 = data[!is.na(data$steps),1:3]
+result = tapply(data2$steps, list(data2$date), sum)
+hist(result, xlab = "Total Steps Per Day", ylab = "Frequency", 
+              main="Total Number of Steps Per Day")
+```
+
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
+
+```r
+cat("Mean is", mean(result))
+```
+
+```
+## Mean is 10766
+```
+
+```r
+cat("Median is", median(result))
+```
+
+```
+## Median is 10765
+```
 
 ## What is the average daily activity pattern?
 
