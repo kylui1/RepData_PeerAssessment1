@@ -3,11 +3,24 @@
 
 ## Loading and preprocessing the data
 
+```{r}
+data =  read.csv("activity.csv", stringsAsFactors=FALSE)
+data$date= as.Date(data$date, format="%Y-%m-%d")
+```
 
 
 ## What is mean total number of steps taken per day?
 
+The histogram of the total number of steps taken each day
+```{r}
+data2 = data[!is.na(data$steps),1:3]
+result = tapply(data2$steps, list(data2$date), sum)
+hist(result, xlab = "Total Steps Per Day", ylab = "Frequency", 
+              main="Total Number of Steps Per Day")
+cat("Mean is", mean(result))
+cat("Median is", median(result))
 
+```
 
 ## What is the average daily activity pattern?
 
