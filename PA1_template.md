@@ -1,5 +1,5 @@
-# Reproducible Research: Peer Assessment 1
 
+# Reproducible Research: Peer Assessment 1
 
 ## Loading and preprocessing the data
 
@@ -21,7 +21,7 @@ hist(result, xlab = "Total Steps Per Day", ylab = "Frequency",
               main="Total Number of Steps Per Day")
 ```
 
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
+![plot of chunk totalnostepsperday](./PA1_template_files/figure-html/totalnostepsperday.png) 
 
 ```r
 cat("Mean is", mean(result))
@@ -41,6 +41,16 @@ cat("Median is", median(result))
 
 ## What is the average daily activity pattern?
 
+
+```r
+data3 = data2[,c(1,3)]
+result3 = tapply(data3$steps, data3$interval, mean)
+x = strptime(sprintf("%04d", as.numeric(names(result3))), "%H%M")
+plot(x, result3, type="l", xlab="Time", ylab="Average Number of Steps",
+     main = "Average Daily Activity Patterns")
+```
+
+![plot of chunk averageactivitypattern](./PA1_template_files/figure-html/averageactivitypattern.png) 
 
 
 ## Imputing missing values
