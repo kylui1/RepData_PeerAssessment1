@@ -119,6 +119,7 @@ cat("Median is", median(result4))
 ## Are there differences in activity patterns between weekdays and weekends?
 
 ```r
+library("lattice")
 data5 = data4n3
 data5["date"] = NULL
 data5["date"] = weekdays(as.Date(substr(data4n3$datetime, 1, 10), format = "%Y-%m-%d"))
@@ -126,13 +127,8 @@ data5["day"] = NULL
 data5["day"] = ifelse((data5$date == "Saturday" | data5$date == "Sunday"), "Weekend", "Weekday")
 
 data5n1 = data.frame(steps=data5$steps, time=substring(data5$datetime, 12, 19), day=data5$day)
-
-result51 = tapply(data5n1$steps[data5n1$day=="Weekday"], data5n1$time[data5n1$day=="Weekday"], sum)
-result52 = tapply(data5n1$steps[data5n1$day=="Weekend"], data5n1$time[data5n1$day=="Weekend"], sum)
-x = as.numeric(gsub(pattern = ":", replacement ="", names(result51)))/100
-par(mfrow=c(2,1))
-plot(x, result51, type="l", xlab= "Interval", ylab="Number of steps", main="Weekday")
-plot(x, result52, type="l", xlab= "Interval", ylab="Number of steps", main="Weekend")
+result5 = aggregate(data5n1$steps, list(data5n1$time, data5n1$day), FUN = sum)
+xyplot(x ~ as.numeric(gsub(pattern=":", replacement="", as.character(Group.1)))/100 | factor(Group.2), data= result5, type ="l", layout=c(1,2), xlab="Time")
 ```
 
 ![plot of chunk weekaysends](figure/weekaysends.png) 
